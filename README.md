@@ -1,0 +1,3 @@
+# Materials for Introduction to Psychopy workshop
+
+work in progress...

@@ -1,0 +1,16 @@
+---
+title: "Intro to python"
+author: "Stephen Rhodes"
+date: ""
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Python
+
+- Basics...
+
+
