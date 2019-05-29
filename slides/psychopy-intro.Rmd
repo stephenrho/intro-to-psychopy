@@ -1,0 +1,18 @@
+---
+title: "Introduction to psychopy"
+author: "Stephen Rhodes"
+date: "`r Sys.Date()`"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Psychopy
+
+https://www.psychopy.org/
+
+Peirce et al. (2019). PsychoPy2: Experiments in behavior made easy. *Behavior Research Methods, 51*, 195-203. https://link.springer.com/article/10.3758%2Fs13428-018-01193-y
+
+

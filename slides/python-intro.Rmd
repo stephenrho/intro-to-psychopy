@@ -1,7 +1,7 @@
 ---
-title: "Intro to python"
+title: "Introduction to python"
 author: "Stephen Rhodes"
-date: ""
+date: "`r Sys.Date()`"
 output: ioslides_presentation
 ---
 
@@ -11,6 +11,25 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Python
 
-- Basics...
+- https://www.python.org/
+- We'll go over the basics of:
+    - Data types
+    - Controlling flow (`if`, `while`, `for`)
+    - Functions
+    - Modules
+- More intro here: https://wiki.python.org/moin/BeginnersGuide
+
+## Data Types
+
+https://en.wikibooks.org/wiki/Python_Programming/Data_Types
+
+
+
+## Control Flow
+
+## Functions
+
+## Modules
+
 
 

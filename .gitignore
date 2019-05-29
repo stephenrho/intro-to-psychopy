@@ -1,5 +1,5 @@
 *.Rproj
 *.Rhistory
 *.Rdata
-
+*.pyc
 .Rproj.user
