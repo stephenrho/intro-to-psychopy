@@ -3,3 +3,8 @@
 *.Rdata
 *.pyc
 .Rproj.user
+
+__pycache__
+color-wheel-data/
+cued-recall-data/
+recognition-data/

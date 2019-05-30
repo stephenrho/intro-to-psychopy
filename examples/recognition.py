@@ -10,12 +10,12 @@ import random, os, csv
 import pandas as pd
 
 ### SETTINGS
-WINSIZE = [1000, 1000]
-WIDTH = 30
-DIST = 60
-BACKGROUND=[0,0,0]
+WINSIZE = [1000, 1000] # window size in pixels
+WIDTH = 30 # in cm (used to define monitor settings)
+DIST = 60 # in cm
+BACKGROUND=[0,0,0] # color in 'rgb' space
 FOREGROUND=[-1,-1,-1]
-QUIT="escape"
+QUIT="escape" # a key we can use to exit the experiment at certain points
 
 ### CREATE PSYCHOPY OBJECTS
 mon = monitors.Monitor("monitor1", width=WIDTH, distance=DIST)
@@ -30,22 +30,22 @@ conf_scale = visual.RatingScale(win, low=1, high=3, singleClick=True, showAccept
 RT = core.Clock()
 
 ### GUI FOR GETTING PARTICIPANT INFO
-expInfo = {'Participant' : 1, 'Order': [1, 2], 'Age' : 18}
+expInfo = {'Participant' : 1, 'List': [1, 2], 'Age' : 18}
 expInfo['dateStr'] = data.getDateStr()
 
-dlg = gui.DlgFromDict(expInfo, title = "Basic Information", fixed = ['dateStr'], order=['Participant', 'Order', 'Age'])
+dlg = gui.DlgFromDict(expInfo, title = "Basic Information", fixed = ['dateStr'], order=['Participant', 'List', 'Age'])
 if not dlg.OK:
     core.quit()
 
-save_path = "recognition-data/"
+save_path = "recognition-data/" # create a folder for the data files
 if not os.path.exists(save_path):
     os.makedirs(save_path)
 
-# determine the list seen
-a = csv.DictReader(open('stimuli/study_list%s.csv' % expInfo["Order"]), delimiter=',')
-study_list = [x for x in a]
+### SET UP STIMULI AND CONDITIONS
+a = csv.DictReader(open('stimuli/study_list%s.csv' % expInfo["List"]), delimiter=',')
+study_list = [x for x in a] # unpack into a list of dictionaries
 
-b = csv.DictReader(open('stimuli/test_list%s.csv' % expInfo["Order"]), delimiter=',')
+b = csv.DictReader(open('stimuli/test_list%s.csv' % expInfo["List"]), delimiter=',')
 test_list = [x for x in b]
 
 
@@ -63,7 +63,6 @@ all_words = read_words(file="stimuli/words.txt")
 
 study_words = random.sample(all_words, len(all_words)/2)
 study_list = [{"word": i} for i in study_words]
-print(study_list)
 
 test_list = []
 for i in range(len(all_words)):
@@ -88,37 +87,35 @@ def press_key(text = 'Press SPACE to continue', k_list = ['space']):
 
 
 def study_proc(study_list, pres_time = 2, isi = .5):
-
     win.flip()
     core.wait(1)
     for item in study_list:
         text_stim.text = item["word"].upper()
         text_stim.draw()
-        win.flip()
+        win.flip() # present the word for the presentation time
         core.wait(pres_time)
 
         text_stim.text = "+"
         text_stim.draw()
-        win.flip()
+        win.flip() # present a fixation cross for the isi
         core.wait(isi)
 
 
 def test_proc(test_list):
-
-    press_key("Test:\n\n'O' = old\n'N' = new\n\nPress SPACE to start")
+    press_key("'O' = old\n'N' = new\n\nPress SPACE to start")
     # loop through the test list
     for item in test_list:
         text_stim.text = item["word"].upper()
         text_stim.draw()
-        win.flip()
+        win.flip() # present probe word
 
-        RT.reset()
+        RT.reset() # start counting for RT
         resp = event.waitKeys(keyList=["o", "n", QUIT])[0] # returns a list, we just want the first element
         if resp == QUIT:
             core.quit()
-        resp_rt = RT.getTime()
+        resp_rt = RT.getTime() # response has been made
 
-        while conf_scale.noResponse:
+        while conf_scale.noResponse: # get the confidence rating
             conf_scale.draw()
             win.flip()
 
@@ -127,9 +124,9 @@ def test_proc(test_list):
         conf_scale.reset()
 
         win.flip()
-        core.wait(.5)
+        core.wait(.5) # blank interval after response
 
-        if resp == "o":
+        if resp == "o": # did the participant respond "old"?
             resp_old = 1
         else:
             resp_old = 0

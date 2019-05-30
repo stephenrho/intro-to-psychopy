@@ -69,7 +69,7 @@ def press_key(text = 'Press SPACE to continue', k_list = ['space']):
     else:
         return(key)
 
-def study_pair(image, word, study_time = 4, isi = .5):
+def study_pair(image, word, study_time = 2, isi = .5):
 
     i_stim.image = "stimuli/images/" + image
     t_stim.text = word.upper()
@@ -83,7 +83,7 @@ def study_pair(image, word, study_time = 4, isi = .5):
     win.flip()
     core.wait(isi)
 
-def recall_pair(cue_image, correct_word, time_lim = 10, feedback = True, feedback_time = .5, restudy_time = 4, char_lim = 10):
+def recall_pair(cue_image, correct_word, time_lim = 10, feedback = True, feedback_time = .5, restudy_time = 2, char_lim = 10):
     if not isinstance(cue_image, str) or not isinstance(correct_word, str):
         raise(Warning("in recall_pair - only one cue string at a time"))
 
@@ -197,7 +197,8 @@ def main():
     win.flip()
     core.wait(1)
 
-    recall_order = range(NLEARN)
+    recall_order = list(range(NLEARN)) # range has changed in python 3, now must be converted to a list to shuffle
+
     random.shuffle(recall_order)
     # recall
     for pair in recall_order:

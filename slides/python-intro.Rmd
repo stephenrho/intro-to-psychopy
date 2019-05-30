@@ -1,35 +1,351 @@
 ---
 title: "Introduction to python"
-author: "Stephen Rhodes"
-date: "`r Sys.Date()`"
-output: ioslides_presentation
+author: "Stephen Rhodes - srhodes@research.baycrest.org"
+date: "Last updated: `r Sys.Date()`"
+output:
+  ioslides_presentation: 
+    widescreen: true
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
+library(reticulate)
+use_python("/Users/stephenrhodes/anaconda3/bin/python")
 ```
 
 ## Python
 
 - https://www.python.org/
-- We'll go over the basics of:
+- We'll go over the basics of what you'll need before using `psychopy`:
     - Data types
+    - Modules
     - Controlling flow (`if`, `while`, `for`)
     - Functions
-    - Modules
-- More intro here: https://wiki.python.org/moin/BeginnersGuide
+- More intro here: 
+    - https://wiki.python.org/moin/BeginnersGuide
+    - https://python.swaroopch.com/
+
+# Data Types
 
 ## Data Types
 
-https://en.wikibooks.org/wiki/Python_Programming/Data_Types
+Main types that we will use
+
+```{python, eval=F}
+
+3 # integer (int)
+3.0 # float
+'python' # string (str)
+[1,4,2,77,4,7] # list
+{'a': 1, 'b': 2, 'c': 3} # dictionary (dict)
+True # boolean (bool)
+```
+
+```{python}
+type(3) # to find out what type something is
+type({})
+```
+
+## strings
+
+```{python}
+
+"You can add " + "strings"
+
+a = "str"; b = 30; c = 2.56787654
+
+"or insert values: %s, %i, %.4f" % (a, b, c)
+
+"also this way: {}, {}, {:.4f}".format(a, b, c)
+
+```
+
+## lists
+
+```{python}
+a = range(10) # [0,1,2,3,4,5,6,7,8,9]
+a[0] # first element
+a[-1] # last element
+a[0:6]; a[0:6:2] # from:to:step (to = not inclusive)
+```
+
+## lists
+
+```{python}
+# list comprehension - we'll come back to this
+xy = [[x, y] for x in range(3) for y in range(3)]
+print(xy)
+
+xy[1] # second pair
+
+xy[1][0] # first element of second pair
+
+```
 
 
+## lists
 
-## Control Flow
+```{python}
+# 'copied' lists serve as pointers to the original
+list1 = [1,2,3]
+list2 = list1
+list2 = list2.append(4) # so changing a copy
+print(list1) # will change the original
 
-## Functions
+list1 = [1,2,3]
+list2 = list1[:] # this 'unpacks' the list into a new object (or lookup 'tuple's)
+list2 = list2.append(4)
+print(list1)
+
+```
+
+more info: https://en.wikibooks.org/wiki/Python_Programming/Data_Types
+
+## dictionaries
+
+```{python}
+
+d = {"name": "Steve", "age": 30, "enjoys": "food"}
+
+d.keys() # like column names
+d.values()
+
+"%s is %d years old and enjoys %s" % (d["name"], d["age"], d["enjoys"])
+
+```
+
+## lists + dictionaries
+
+```{python, echo=F}
+names = ['Dave', 'Mary', 'John', 'Liz']
+ages = [22, 67, 12, 54]
+enjoyment = ['cooking', 'sport', 'gaming', 'programming']
+
+people = []
+for i in range(4):
+    people.append({"name": names[i], "age": ages[i], "enjoys": enjoyment[i]})
+
+```
+
+```{python}
+print(people) # the .Rmd file shows how this was created
+
+len(people) # there are 4 people
+people[3] # who is the 4th person?
+
+```
+
+## lists + dictionaries
+
+```{python}
+for p in people: # print each person's name, age, and source of enjoyment
+    "%s is %d years old and enjoys %s" % (p["name"], p["age"], p["enjoys"])
+    
+# we'll cover for loops in more detail later
+```
+
+# Modules
 
 ## Modules
 
+```{python}
+import random, pandas # multiple modules can be imported separated by ','
+import numpy as np # names can be abbreviated
+
+random.choice(["yes", "no"])
+np.pi
+a = np.array([[1,2,3], [4,5,6]])
+a
+
+```
+
+## Modules
+
+```{python}
+
+d = pandas.DataFrame(a, columns=["A", "B", "C"])
+d
+
+d.describe()
+
+```
+
+## Modules
+
+```{python}
+from numpy import pi # specific functions can be imported
+from os import * # or import everything
+
+pi # we don't have to refer to np. anymore
+
+listdir(getcwd()) # from os
+```
 
 
+# Control Flow
+
+## `if` statement
+
+```{python}
+
+number = 3
+
+if number == 1: # note the : and indentation
+    print("I'm number 1!")
+elif number == 2:
+    print("I'm number 2!")
+elif number == 3:
+    print("I'm number 3!")
+else:
+    print("I'm not number 1, 2, or 3!")
+
+```
+
+## `if` statement
+
+```{python}
+
+number = 3
+letter = 'c'
+
+if number == 1 and not letter == 'a': # could've used letter != 'a'
+    print("I'm number 1 and not 'a'!")
+elif number == 2 or letter == 'b':
+    print("I'm number 2 or 'b'!")
+elif number == 3 and letter in ['a', 'c']:
+    print("I'm number 3 and '%s'!" % letter)
+else:
+    print("I don't know what to do with this combination...")
+
+```
+
+
+## `for` loop 
+
+```{python}
+sq = []
+for i in range(10):
+    sq.append(i**2)
+
+print(sq)
+```
+
+```{python}
+words = ["here", "are", "some", "words"]
+for w in words:
+    print(w)
+
+```
+
+## list comprehension
+
+A more concise way of creating lists
+
+```{python}
+sq = [x**2 for x in range(10)]
+print(sq)
+```
+
+```{python}
+import random
+
+all_items = range(100) # create some 'items': numbers 0:99
+sampled_items = random.sample(all_items, 90) # randomly sample 90 of them
+
+# if we want the unsampled items we can use
+[x for x in all_items if x not in sampled_items]
+```
+
+## `while` loop 
+
+```{python}
+count = 0
+while count < 10:
+    count += 1
+    print(count)
+```
+
+## all together now
+
+```{python}
+# how many coin flips before we get a heads?
+# repeat this process 10 times
+import random
+flips = []
+for i in range(10):
+    count = 0
+    heads_appeared = False
+    while not heads_appeared:
+        this_flip = random.choice([0,1]) # 0 = tails, 1 = heads
+        if this_flip: # 1 (any other number) = True, 0 = False
+            heads_appeared = True
+        else:
+            count += 1
+    flips.append(count)
+
+print(flips)
+```
+
+
+# Functions
+
+## Functions
+
+```{python}
+
+def mean(x):
+    m = sum(x)/float(len(x))
+    # note that int/int = int, whereas int/float = float
+    # we convert len(x) to float to prevent int rounding
+    return(m)
+    
+mean([1,2,3,4,5,6])
+
+```
+
+## Functions
+
+```{python}
+def block_list(words, images):
+    if len(words) != len(images):
+        raise(Warning("words and images should be the same length"))
+    bl = []
+    for i in range(len(words)):
+        bl.append({"word": words[i], "image": images[i]})
+    
+    return(bl)
+    
+block_list(words = ["fox", "deer"], images=["path/fox.png", "path/deer.png"])
+
+# block_list(words = ["fox", "deer", "cat"], images=["path/fox.png", "path/deer.png"])
+# would stop the script
+```
+
+## Functions
+
+```{python}
+from scipy.stats import vonmises
+import numpy as np
+def d_mixture(x, pmem, kappa, log=False):
+    # density of response x on circular space under mixture model
+    dvon = vonmises.pdf(x, kappa)
+    d = pmem*dvon + (1 - pmem)/(2*np.pi)
+    if log:
+        return(np.log(d))
+    else:
+        return(d)
+        
+d_mixture(0, .8, 1)
+d_mixture(0, .8, 1, log=True)
+
+```
+
+## Links
+
+We've just touched on the very basics. More information here:
+
+- A Byte of Python: https://python.swaroopch.com/
+- pandas: https://pandas.pydata.org/
+- numpy: https://www.numpy.org/
+- scipy: https://www.scipy.org/
+- random: https://docs.python.org/3/library/random.html

@@ -11,6 +11,7 @@ import numpy as np
 import random, os
 from psychopy.tools.colorspacetools import hsv2rgb # useful function for converting color space
 from datetime import datetime
+from extras import LAB2RGB # load function from extras.py
 
 try:
     import win32api # if we're on a windows machine we can use this module to move the mouse
@@ -40,7 +41,21 @@ instr = visual.TextStim(win, color=FOREGROUND, pos=[0, 0], height=.8, wrapWidth=
 my_mouse = event.Mouse(win = win)
 
 wheel = visual.ElementArrayStim(win, units = 'deg', fieldPos = [0,0], fieldSize = [5,5], fieldShape = 'circle', nElements = 360, sizes = WHEELWIDTH,elementMask = 'circle', elementTex = 'none', texRes = 400, phases = 1)
+
+'''
+choose the color space
+can either use
+(1) colors differing in hue or
+(2) draw a circle in lab color space
+
+comment out line you don't want to use
+'''
+
 colors = hsv2rgb([[i, 1, .8] for i in range(360)]) # creates 360 color values differing in hue and converts them to rgb [-1,1] format
+
+# colors = LAB2RGB(L = 60, a = 20, b = 20, radius = 60) # uses function from extras.py to convert lab to rgb
+# note that these colors won't be rendered exactly as intended if the monitor isn't calibrated properly
+# see https://www.ncbi.nlm.nih.gov/pubmed/24715329
 
 stim = [] # this loop creates 8 circle objects
 for s in range(8):
