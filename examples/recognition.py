@@ -154,7 +154,7 @@ def main():
     # convert to a data frame and add some columns
     test_data_pd = pd.DataFrame(test_data)
     test_data_pd["pid"] = expInfo["Participant"]
-    test_data_pd["order"] = expInfo["Order"]
+    test_data_pd["list"] = expInfo["List"]
     test_data_pd["age"] = expInfo["Age"]
 
     # use pandas to write data to csv file
